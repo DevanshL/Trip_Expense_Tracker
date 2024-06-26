@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
+import os
 
 def create_connection():
     """Create a database connection and return the connection object."""
