@@ -5,18 +5,11 @@ import os
 def create_connection():
     """Create a database connection and return the connection object."""
     try:
-        host = os.getenv('DB_HOST', 'default_host')
-        user = os.getenv('DB_USER', 'default_user')
-        password = os.getenv('DB_PASSWORD', 'default_password')
-        database = os.getenv('DB_NAME', 'default_database')
-
-        print(f"Connecting to database at {host} with user {user}")
-
         connection = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password,
-            database=database
+            host="localhost",
+            user="root",
+            password="Ldh@2073",
+            database="wages"
         )
         if connection.is_connected():
             print("Connected to MySQL database")
