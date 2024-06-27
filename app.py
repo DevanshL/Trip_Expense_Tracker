@@ -134,7 +134,7 @@ if selected == 'Data Visualization':
                     total_expense = 0
                     payer = ""
                     comment = ""
-                    latest_entry = max(period_data, key=lambda x: x[1])  # Assuming created_at is at index 1
+                    latest_entry = max(period_data, key=lambda x: x[13])  # Assuming created_at is at index 13
 
                     # Initialize aggregated data
                     aggregated_data = {}
@@ -144,18 +144,18 @@ if selected == 'Data Visualization':
                     comment = latest_entry[12]  # Assuming comment is at index 12
 
                     for data in period_data:
-                        if data[1] == latest_entry[1]:  # Assuming created_at is at index 1
-                            person = data[0]  # Assuming name is at index 0
+                        if data[13] == latest_entry[13]:  # Assuming created_at is at index 13
+                            person = data[3]  # Assuming name is at index 3
                             if person not in aggregated_data:
                                 aggregated_data[person] = {expense: 0 for expense in expenses + ['Extra']}
 
-                            aggregated_data[person]['Accommodation'] += safe_int(data[4])  # Assuming accommodation is at index 4
-                            aggregated_data[person]['Food and Drinks'] += safe_int(data[5])  # Assuming food_drinks is at index 5
-                            aggregated_data[person]['Transport'] += safe_int(data[6])  # Assuming transport is at index 6
-                            aggregated_data[person]['Entertainment'] += safe_int(data[7])  # Assuming entertainment is at index 7
-                            aggregated_data[person]['Shopping'] += safe_int(data[8])  # Assuming shopping is at index 8
-                            aggregated_data[person]['Miscellaneous'] += safe_int(data[9])  # Assuming miscellaneous is at index 9
-                            aggregated_data[person]['Extra'] += safe_int(data[10])  # Assuming extra is at index 10
+                            aggregated_data[person]['Accommodation'] += safe_int(data[5])  # Assuming accommodation is at index 5
+                            aggregated_data[person]['Food and Drinks'] += safe_int(data[6])  # Assuming food_drinks is at index 6
+                            aggregated_data[person]['Transport'] += safe_int(data[7])  # Assuming transport is at index 7
+                            aggregated_data[person]['Entertainment'] += safe_int(data[8])  # Assuming entertainment is at index 8
+                            aggregated_data[person]['Shopping'] += safe_int(data[9])  # Assuming shopping is at index 9
+                            aggregated_data[person]['Miscellaneous'] += safe_int(data[10])  # Assuming miscellaneous is at index 10
+                            aggregated_data[person]['Extra'] += safe_int(data[11])  # Assuming extra is at index 11
 
                             total_expense += sum(aggregated_data[person].values())
 
