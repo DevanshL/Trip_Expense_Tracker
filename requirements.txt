@@ -3,3 +3,4 @@ plotly==5.22.0
 streamlit-option-menu==0.3.13
 mysql-connector-python==8.4.0
 gunicorn==22.0.0
+psycopg2==2.9.9
