@@ -133,7 +133,7 @@ if selected == 'Data Visualization':
                     # Initialize aggregated data
                     aggregated_data = {}
 
-                    total_income = latest_entry[2]  # Assuming total_income is at index 2
+                    total_income = int(latest_entry[2])  # Assuming total_income is at index 2
                     payer = latest_entry[3]  # Assuming payer is at index 3
                     comment = latest_entry[12]  # Assuming comment is at index 12
 
@@ -143,13 +143,13 @@ if selected == 'Data Visualization':
                             if person not in aggregated_data:
                                 aggregated_data[person] = {expense: 0 for expense in expenses + ['Extra']}
 
-                            aggregated_data[person]['Accommodation'] += data[4]  # Assuming accommodation is at index 4
-                            aggregated_data[person]['Food and Drinks'] += data[5]  # Assuming food_drinks is at index 5
-                            aggregated_data[person]['Transport'] += data[6]  # Assuming transport is at index 6
-                            aggregated_data[person]['Entertainment'] += data[7]  # Assuming entertainment is at index 7
-                            aggregated_data[person]['Shopping'] += data[8]  # Assuming shopping is at index 8
-                            aggregated_data[person]['Miscellaneous'] += data[9]  # Assuming miscellaneous is at index 9
-                            aggregated_data[person]['Extra'] += data[10]  # Assuming extra is at index 10
+                            aggregated_data[person]['Accommodation'] += int(data[4])  # Assuming accommodation is at index 4
+                            aggregated_data[person]['Food and Drinks'] += int(data[5])  # Assuming food_drinks is at index 5
+                            aggregated_data[person]['Transport'] += int(data[6])  # Assuming transport is at index 6
+                            aggregated_data[person]['Entertainment'] += int(data[7])  # Assuming entertainment is at index 7
+                            aggregated_data[person]['Shopping'] += int(data[8])  # Assuming shopping is at index 8
+                            aggregated_data[person]['Miscellaneous'] += int(data[9])  # Assuming miscellaneous is at index 9
+                            aggregated_data[person]['Extra'] += int(data[10])  # Assuming extra is at index 10
 
                             total_expense += sum(aggregated_data[person].values())
 
