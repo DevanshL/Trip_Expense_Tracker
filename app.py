@@ -108,6 +108,7 @@ if selected == 'Data Entry':
                 else:
                     st.error('Failed to save data')
 
+# Data visualization section
 if selected == 'Data Visualization':
     st.header('Data Visualization')
     with st.form('saved_periods'):
@@ -127,28 +128,28 @@ if selected == 'Data Visualization':
                     total_expense = 0
                     payer = ""
                     comment = ""
-                    latest_entry = max(period_data, key=lambda x: x[1])  # Assuming created_at is at index 1
+                    latest_entry = max(period_data, key=lambda x: x['created_at'])
 
                     # Initialize aggregated data
                     aggregated_data = {}
 
-                    total_income = latest_entry[2]  # Assuming total_income is at index 2
-                    payer = latest_entry[3]  # Assuming payer is at index 3
-                    comment = latest_entry[11]  # Assuming comment is at index 11
+                    total_income = latest_entry.get('total_income', 0)
+                    payer = latest_entry.get('payer', '')
+                    comment = latest_entry.get('comment', '')
 
                     for data in period_data:
-                        if data[1] == latest_entry[1]:  # Assuming created_at is at index 1
-                            person = data[0]  # Assuming name is at index 0
+                        if data['created_at'] == latest_entry['created_at']:
+                            person = data.get('name', '')
                             if person not in aggregated_data:
                                 aggregated_data[person] = {expense: 0 for expense in expenses + ['Extra']}
 
-                            aggregated_data[person]['Accommodation'] += data[4]  # Assuming accommodation is at index 4
-                            aggregated_data[person]['Food and Drinks'] += data[5]  # Assuming food_drinks is at index 5
-                            aggregated_data[person]['Transport'] += data[6]  # Assuming transport is at index 6
-                            aggregated_data[person]['Entertainment'] += data[7]  # Assuming entertainment is at index 7
-                            aggregated_data[person]['Shopping'] += data[8]  # Assuming shopping is at index 8
-                            aggregated_data[person]['Miscellaneous'] += data[9]  # Assuming miscellaneous is at index 9
-                            aggregated_data[person]['Extra'] += data[10]  # Assuming extra is at index 10
+                            aggregated_data[person]['Accommodation'] += data.get('accommodation', 0)
+                            aggregated_data[person]['Food and Drinks'] += data.get('food_drinks', 0)
+                            aggregated_data[person]['Transport'] += data.get('transport', 0)
+                            aggregated_data[person]['Entertainment'] += data.get('entertainment', 0)
+                            aggregated_data[person]['Shopping'] += data.get('shopping', 0)
+                            aggregated_data[person]['Miscellaneous'] += data.get('miscellaneous', 0)
+                            aggregated_data[person]['Extra'] += data.get('extra', 0)
 
                             total_expense += sum(aggregated_data[person].values())
 
@@ -185,5 +186,3 @@ if selected == 'Data Visualization':
                     fig = go.Figure(data)
                     fig.update_layout(margin=dict(l=0, r=0, t=5, b=5))
                     st.plotly_chart(fig, use_container_width=True)
-
-
