@@ -108,6 +108,12 @@ if selected == 'Data Entry':
                 else:
                     st.error('Failed to save data')
 
+def safe_int(value):
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return 0
+
 # Data visualization section
 if selected == 'Data Visualization':
     st.header('Data Visualization')
@@ -133,7 +139,7 @@ if selected == 'Data Visualization':
                     # Initialize aggregated data
                     aggregated_data = {}
 
-                    total_income = int(latest_entry[2])  # Assuming total_income is at index 2
+                    total_income = safe_int(latest_entry[2])  # Assuming total_income is at index 2
                     payer = latest_entry[3]  # Assuming payer is at index 3
                     comment = latest_entry[12]  # Assuming comment is at index 12
 
@@ -143,13 +149,13 @@ if selected == 'Data Visualization':
                             if person not in aggregated_data:
                                 aggregated_data[person] = {expense: 0 for expense in expenses + ['Extra']}
 
-                            aggregated_data[person]['Accommodation'] += int(data[4])  # Assuming accommodation is at index 4
-                            aggregated_data[person]['Food and Drinks'] += int(data[5])  # Assuming food_drinks is at index 5
-                            aggregated_data[person]['Transport'] += int(data[6])  # Assuming transport is at index 6
-                            aggregated_data[person]['Entertainment'] += int(data[7])  # Assuming entertainment is at index 7
-                            aggregated_data[person]['Shopping'] += int(data[8])  # Assuming shopping is at index 8
-                            aggregated_data[person]['Miscellaneous'] += int(data[9])  # Assuming miscellaneous is at index 9
-                            aggregated_data[person]['Extra'] += int(data[10])  # Assuming extra is at index 10
+                            aggregated_data[person]['Accommodation'] += safe_int(data[4])  # Assuming accommodation is at index 4
+                            aggregated_data[person]['Food and Drinks'] += safe_int(data[5])  # Assuming food_drinks is at index 5
+                            aggregated_data[person]['Transport'] += safe_int(data[6])  # Assuming transport is at index 6
+                            aggregated_data[person]['Entertainment'] += safe_int(data[7])  # Assuming entertainment is at index 7
+                            aggregated_data[person]['Shopping'] += safe_int(data[8])  # Assuming shopping is at index 8
+                            aggregated_data[person]['Miscellaneous'] += safe_int(data[9])  # Assuming miscellaneous is at index 9
+                            aggregated_data[person]['Extra'] += safe_int(data[10])  # Assuming extra is at index 10
 
                             total_expense += sum(aggregated_data[person].values())
 
@@ -157,9 +163,9 @@ if selected == 'Data Visualization':
 
                     # Display metrics
                     col1, col2, col3 = st.columns(3)
-                    col1.metric('Total Income', f'{currency} {total_income}')
-                    col2.metric('Total Expense', f'{currency} {total_expense}')
-                    col3.metric('Remaining Budget', f'{currency} {remaining_budget}')
+                    col1.metric('Total Income', f'{currency} {total_income:,}')
+                    col2.metric('Total Expense', f'{currency} {total_expense:,}')
+                    col3.metric('Remaining Budget', f'{currency} {remaining_budget:,}')
                     st.text(f'Comment: {comment}')
 
                     # Calculate the amount owed by each person
@@ -170,7 +176,7 @@ if selected == 'Data Visualization':
 
                     st.write(f'Amount Owed to the Payment Maker ({payer}):')
                     for person, amount in amount_owed.items():
-                        st.write(f'{person}: {currency} {amount:.2f}')
+                        st.write(f'{person}: {currency} {amount:,}')
 
                     # Prepare data for the Sankey chart
                     persons = list(aggregated_data.keys())
