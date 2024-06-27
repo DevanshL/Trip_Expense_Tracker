@@ -20,6 +20,42 @@ def create_connection():
         print(f"Error: {e}")
     return None
 
+def create_table():
+    """Create the trip_expenses table in the database."""
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS trip_expenses (
+        id SERIAL PRIMARY KEY,
+        period VARCHAR(255) NOT NULL,
+        total_income INTEGER NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        payer VARCHAR(255) NOT NULL,
+        extra INTEGER DEFAULT 0,
+        shopping INTEGER DEFAULT 0,
+        transport INTEGER DEFAULT 0,
+        accommodation INTEGER DEFAULT 0,
+        entertainment INTEGER DEFAULT 0,
+        miscellaneous INTEGER DEFAULT 0,
+        food_drinks INTEGER DEFAULT 0,
+        comment TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    """
+    connection = create_connection()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            cursor.execute(create_table_query)
+            connection.commit()
+            cursor.close()
+            connection.close()
+            print("Table created successfully")
+        except Error as e:
+            print(f"Error: {e}")
+            if connection:
+                connection.rollback()
+                cursor.close()
+                connection.close()
+
 def execute_query(query, data=None):
     """Execute a single query."""
     connection = create_connection()
@@ -121,3 +157,13 @@ def get_period(period):
     query = "SELECT * FROM trip_expenses WHERE period = %s"
     result = fetch_query(query, (period,))
     return result
+
+if __name__ == "__main__":
+    # Set environment variables
+    os.environ["DB_HOST"] = "dpg-cpugl7dds78s73dsdg5g-a.oregon-postgres.render.com"
+    os.environ["DB_NAME"] = "wages"
+    os.environ["DB_USER"] = "wages_user"
+    os.environ["DB_PASSWORD"] = "0pm7WU6IpCiqnOcCeZ95Vv3H8QUP1pK7"
+    
+    # Create the table
+    create_table()
