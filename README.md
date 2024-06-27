@@ -109,7 +109,7 @@ PGPASSWORD=0pm7WU6IpCiqnOcCeZ95Vv3H8QUP1pK7 psql -h dpg-cpugl7dds78s73dsdg5g-a.o
 
 ## Hosted Website
 You can access the hosted version of the Trip Expense Tracker at the following link:
-![hosted link](https://trip-expense-tracker-7.onrender.com/)
+[hosted link](https://trip-expense-tracker-7.onrender.com/)
 
 ## License
 This project is licensed under the MIT License.
