@@ -108,7 +108,6 @@ if selected == 'Data Entry':
                 else:
                     st.error('Failed to save data')
 
-# Data visualization section
 if selected == 'Data Visualization':
     st.header('Data Visualization')
     with st.form('saved_periods'):
@@ -128,7 +127,7 @@ if selected == 'Data Visualization':
                     total_expense = 0
                     payer = ""
                     comment = ""
-                    latest_entry = max(period_data, key=lambda x: x['created_at'])
+                    latest_entry = max(period_data, key=lambda x: x[1])  # Adjust indexing based on tuple structure
 
                     # Initialize aggregated data
                     aggregated_data = {}
@@ -138,7 +137,7 @@ if selected == 'Data Visualization':
                     comment = latest_entry.get('comment', '')
 
                     for data in period_data:
-                        if data['created_at'] == latest_entry['created_at']:
+                        if data[1] == latest_entry[1]:  # Adjust indexing based on tuple structure
                             person = data.get('name', '')
                             if person not in aggregated_data:
                                 aggregated_data[person] = {expense: 0 for expense in expenses + ['Extra']}
@@ -186,4 +185,5 @@ if selected == 'Data Visualization':
                     fig = go.Figure(data)
                     fig.update_layout(margin=dict(l=0, r=0, t=5, b=5))
                     st.plotly_chart(fig, use_container_width=True)
+
 
