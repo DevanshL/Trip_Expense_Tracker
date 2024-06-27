@@ -1,21 +1,21 @@
-import mysql.connector
-from mysql.connector import Error
 import os
+import psycopg2
+from psycopg2 import Error
 
 def create_connection():
     """Create a database connection and return the connection object."""
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="Ldh@2073",
-            database="wages"
+        connection = psycopg2.connect(
+            host=os.getenv("DB_HOST"),
+            database=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD")
         )
-        if connection.is_connected():
-            print("Connected to MySQL database")
+        if connection:
+            print("Connected to PostgreSQL database")
             return connection
         else:
-            print("Failed to connect to MySQL database")
+            print("Failed to connect to PostgreSQL database")
     except Error as e:
         print(f"Error: {e}")
     return None
@@ -51,7 +51,7 @@ def fetch_query(query, data=None):
         print("Failed to create database connection.")
         return None
     try:
-        cursor = connection.cursor(dictionary=True)
+        cursor = connection.cursor()
         if data:
             cursor.execute(query, data)
         else:
@@ -113,7 +113,7 @@ def get_all_periods():
     query = "SELECT DISTINCT period FROM trip_expenses"
     results = fetch_query(query)
     if results:
-        return [result['period'] for result in results]
+        return [result[0] for result in results]
     return []
 
 def get_period(period):
@@ -121,4 +121,3 @@ def get_period(period):
     query = "SELECT * FROM trip_expenses WHERE period = %s"
     result = fetch_query(query, (period,))
     return result
-
