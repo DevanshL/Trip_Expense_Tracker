@@ -5,14 +5,12 @@ import calendar
 from datetime import datetime
 from database import insert_period, get_all_periods, get_period
 
-# Constants
 expenses = ['Accommodation', 'Food and Drinks', 'Transport', 'Entertainment', 'Shopping', 'Miscellaneous']
 currency = 'RS'
 page_title = "Trip Expense Tracker"
 page_icon = ':money_with_wings:'  # webfx.com
 layout = "centered"
 
-# Configure the page
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout=layout)
 st.title(page_title + " " + page_icon)
 
@@ -36,7 +34,7 @@ selected = option_menu(menu_title=None,
                        orientation='horizontal',
 )
 
-# Initialize session state variables if they don't exist
+# Initialize session state variables 
 if 'step' not in st.session_state:
     st.session_state.step = 1
 if 'total_income' not in st.session_state:
@@ -134,28 +132,27 @@ if selected == 'Data Visualization':
                     total_expense = 0
                     payer = ""
                     comment = ""
-                    latest_entry = max(period_data, key=lambda x: x[13])  # Assuming created_at is at index 13
-
-                    # Initialize aggregated data
+                    latest_entry = max(period_data, key=lambda x: x[13])  # 13 indexes creation for entry data
+                    
                     aggregated_data = {}
 
-                    total_income = safe_int(latest_entry[2])  # Assuming total_income is at index 2
-                    payer = latest_entry[3]  # Assuming payer is at index 3
-                    comment = latest_entry[12]  # Assuming comment is at index 12
+                    total_income = safe_int(latest_entry[2])  # total_income  at index 2
+                    payer = latest_entry[3]  # payer at index 3
+                    comment = latest_entry[12]  # comment at index 12
 
                     for data in period_data:
-                        if data[13] == latest_entry[13]:  # Assuming created_at is at index 13
-                            person = data[3]  # Assuming name is at index 3
+                        if data[13] == latest_entry[13]:  
+                            person = data[3]  
                             if person not in aggregated_data:
                                 aggregated_data[person] = {expense: 0 for expense in expenses + ['Extra']}
 
-                            aggregated_data[person]['Accommodation'] += safe_int(data[5])  # Assuming accommodation is at index 5
-                            aggregated_data[person]['Food and Drinks'] += safe_int(data[6])  # Assuming food_drinks is at index 6
-                            aggregated_data[person]['Transport'] += safe_int(data[7])  # Assuming transport is at index 7
-                            aggregated_data[person]['Entertainment'] += safe_int(data[8])  # Assuming entertainment is at index 8
-                            aggregated_data[person]['Shopping'] += safe_int(data[9])  # Assuming shopping is at index 9
-                            aggregated_data[person]['Miscellaneous'] += safe_int(data[10])  # Assuming miscellaneous is at index 10
-                            aggregated_data[person]['Extra'] += safe_int(data[11])  # Assuming extra is at index 11
+                            aggregated_data[person]['Accommodation'] += safe_int(data[5])  # Accommodation at index 5
+                            aggregated_data[person]['Food and Drinks'] += safe_int(data[6])  # Food_drinks at index 6
+                            aggregated_data[person]['Transport'] += safe_int(data[7])  # Transport at index 7
+                            aggregated_data[person]['Entertainment'] += safe_int(data[8])  # Entertainment at index 8
+                            aggregated_data[person]['Shopping'] += safe_int(data[9])  # Shopping at index 9
+                            aggregated_data[person]['Miscellaneous'] += safe_int(data[10])  # Miscellaneous at index 10
+                            aggregated_data[person]['Extra'] += safe_int(data[11])  # Extra at index 11
 
                             total_expense += sum(aggregated_data[person].values())
 
@@ -168,7 +165,7 @@ if selected == 'Data Visualization':
                     col3.metric('Remaining Budget', f'{currency} {remaining_budget:,}')
                     st.text(f'Comment: {comment}')
 
-                    # Calculate the amount owed by each person
+                    # Amount owed by each person
                     amount_owed = {
                         person: sum(aggregated_data[person].values())
                         for person in aggregated_data if person != payer
@@ -178,7 +175,7 @@ if selected == 'Data Visualization':
                     for person, amount in amount_owed.items():
                         st.write(f'{person}: {currency} {amount:,}')
 
-                    # Prepare data for the Sankey chart
+                    # Sankey chart
                     persons = list(aggregated_data.keys())
                     labels = ['Total Income'] + persons + expenses + ['Total Expense', 'Remaining Budget']
                     source = [0] * len(persons) + [labels.index(person) for person in persons for _ in expenses] + [0, 0]
