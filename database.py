@@ -21,7 +21,6 @@ def create_connection():
     return None
 
 def create_table():
-    """Create the trip_expenses table in the database."""
     create_table_query = """
     CREATE TABLE IF NOT EXISTS trip_expenses (
         id SERIAL PRIMARY KEY,
@@ -81,7 +80,6 @@ def execute_query(query, data=None):
         return False
 
 def fetch_query(query, data=None):
-    """Fetch data from the database."""
     connection = create_connection()
     if connection is None:
         print("Failed to create database connection.")
@@ -104,7 +102,6 @@ def fetch_query(query, data=None):
         return None
 
 def insert_period(period, total_income, persons, payer, person_expenses, comment):
-    """Insert data for a given period without deleting existing data."""
     connection = create_connection()
     if connection is None:
         print("Failed to create database connection.")
@@ -145,7 +142,6 @@ def insert_period(period, total_income, persons, payer, person_expenses, comment
         return False
 
 def get_all_periods():
-    """Retrieve all periods from the database."""
     query = "SELECT DISTINCT period FROM trip_expenses"
     results = fetch_query(query)
     if results:
@@ -153,17 +149,14 @@ def get_all_periods():
     return []
 
 def get_period(period):
-    """Retrieve data for a specific period."""
     query = "SELECT * FROM trip_expenses WHERE period = %s"
     result = fetch_query(query, (period,))
     return result
 
 if __name__ == "__main__":
-    # Set environment variables
     os.environ["DB_HOST"] = "dpg-cpugl7dds78s73dsdg5g-a.oregon-postgres.render.com"
     os.environ["DB_NAME"] = "wages"
     os.environ["DB_USER"] = "wages_user"
     os.environ["DB_PASSWORD"] = "0pm7WU6IpCiqnOcCeZ95Vv3H8QUP1pK7"
     
-    # Create the table
     create_table()
